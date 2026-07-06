@@ -48,6 +48,9 @@ public class Transaction {
     @Column(nullable = false)
     private Status status;
 
+    @Column(length = 100)
+    private String failureReason;
+
     public enum Status { SETTLED, REJECTED }
 
     public Transaction() {}
@@ -81,4 +84,12 @@ public class Transaction {
 
     public Status getStatus() { return status; }
     public void setStatus(Status status) { this.status = status; }
+
+    public String getFailureReason() {
+        return failureReason;
+    }
+
+    public void setFailureReason(String failureReason) {
+        this.failureReason = failureReason;
+    }
 }

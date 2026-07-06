@@ -88,6 +88,7 @@ public class SettlementService {
         tx.setBridgeNodeId(bridgeNodeId);
         tx.setHopCount(hopCount);
         tx.setStatus(Transaction.Status.SETTLED);
+        tx.setFailureReason(null);
 
         // 🔹 Save transaction in DB
         transactions.save(tx);
@@ -119,6 +120,7 @@ public class SettlementService {
 
         // ❌ Mark as rejected
         tx.setStatus(Transaction.Status.REJECTED);
+        tx.setFailureReason("INSUFFICIENT_BALANCE");
 
         // 🔹 Save rejected transaction
         return transactions.save(tx);
