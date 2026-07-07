@@ -1,0 +1,30 @@
+.dashboard {
+  width: 100%;
+  min-height: 100vh;
+  background: #eef2f7;
+}
+
+.top-section,
+.middle-section,
+.bottom-section {
+  width: 95%;
+  margin: 20px auto;
+}
+
+.top-section {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.bottom-section {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (max-width: 900px) {
+  .top-section {
+    grid-template-columns: 1fr;
+  }
+}

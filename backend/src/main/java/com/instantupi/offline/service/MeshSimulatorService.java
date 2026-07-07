@@ -65,6 +65,7 @@ public class MeshSimulatorService {
         // Store packet inside sender device
         sender.hold(packet);
 
+
         log.info("Packet {} injected at {} (TTL={})",
                 packet.getPacketId().substring(0, 8),
                 senderDeviceId,

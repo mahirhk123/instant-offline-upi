@@ -1,0 +1,95 @@
+.card form{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:12px;
+
+}
+
+.card label{
+
+    font-weight:600;
+
+    color:#333;
+
+}
+
+.card input,
+.card select{
+
+    padding:10px;
+
+    border:1px solid #ccc;
+
+    border-radius:6px;
+
+    font-size:15px;
+
+    outline:none;
+
+}
+
+.card input:focus,
+.card select:focus{
+
+    border-color:#0d6efd;
+
+}
+
+.card button{
+
+    margin-top:10px;
+
+    padding:12px;
+
+    border:none;
+
+    border-radius:6px;
+
+    background:#0d6efd;
+
+    color:white;
+
+    font-size:16px;
+
+    font-weight:bold;
+
+    cursor:pointer;
+
+    transition:0.3s;
+
+}
+
+.card button:hover:not(:disabled){
+
+    background:#0b5ed7;
+
+}
+
+.card button:disabled{
+
+    background:#9bbcf8;
+
+    cursor:not-allowed;
+
+}
+
+.message{
+
+    margin-top:18px;
+
+    padding:12px;
+
+    border-radius:6px;
+
+    background:#eef7ee;
+
+    color:#157347;
+
+    font-weight:bold;
+
+    white-space:pre-line;
+
+}

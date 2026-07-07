@@ -1,0 +1,13 @@
+.card {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    min-height: 220px;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,.12);
+}
+
+.card h2 {
+    color: #1565c0;
+    margin-bottom: 15px;
+}

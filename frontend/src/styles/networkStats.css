@@ -1,0 +1,81 @@
+.network-card{
+
+    background:white;
+
+    border-radius:12px;
+
+    padding:25px;
+
+    margin:20px 0;
+
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+
+}
+
+.network-card h2{
+
+    color:#2563eb;
+
+    margin-bottom:20px;
+
+}
+
+.network-grid{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:20px;
+
+}
+
+.network-item{
+
+    background:#f8fafc;
+
+    border-radius:10px;
+
+    padding:20px;
+
+    text-align:center;
+
+    transition:.3s;
+
+}
+
+.network-item:hover{
+
+    transform:translateY(-5px);
+
+}
+
+.network-item svg{
+
+    font-size:32px;
+
+    color:#2563eb;
+
+    margin-bottom:10px;
+
+}
+
+.network-item span{
+
+    display:block;
+
+    color:#666;
+
+    margin-bottom:8px;
+
+}
+
+.network-item h3{
+
+    margin:0;
+
+    font-size:28px;
+
+    color:#111827;
+
+}
