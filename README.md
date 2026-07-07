@@ -1,330 +1,368 @@
-# 🚀 Instant Offline UPI — Demo
+# 💳 Instant Offline UPI Payment System
 
-A Spring Boot backend that demonstrates **offline UPI payments routed through a mesh network**.
+> A secure offline UPI payment simulation built using **Spring Boot**, **React**, and **MySQL** with **Bluetooth Mesh Network Simulation**, **Hybrid Encryption**, and **Idempotent Transaction Processing**.
 
-Imagine you're in a basement with zero connectivity. You send ₹200 to your friend. Your phone encrypts the payment and broadcasts it to nearby phones. The packet hops device-to-device until someone walks outside, gets internet, and uploads it to the backend. The backend decrypts, validates, and settles the transaction.
-
-This project simulates that entire system — including the mesh network — on a single machine.
-
----
-
-# 📚 Table of Contents
-
-- What this demo proves  
-- How to run  
-- Demo flow (step-by-step)  
-- Architecture  
-- Core problems & solutions  
-- Tech stack  
-- Project structure  
-- API reference  
-- What’s NOT production-ready  
-- Limitations  
-- Troubleshooting  
+<p align="center">
+  <img src="https://img.shields.io/badge/Java-21-orange" />
+  <img src="https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen" />
+  <img src="https://img.shields.io/badge/React-19-blue" />
+  <img src="https://img.shields.io/badge/MySQL-8-blue" />
+  <img src="https://img.shields.io/badge/Vite-Latest-purple" />
+  <img src="https://img.shields.io/badge/Status-Completed-success" />
+</p>
 
 ---
 
-# ✅ What This Demo Proves
+# 📖 Project Overview
 
-This system demonstrates three critical guarantees:
+Instant Offline UPI Payment System is a full-stack application that demonstrates how secure digital payments can be performed even when internet connectivity is unavailable.
 
-### 🔐 1. Secure transmission through untrusted devices
-Intermediate devices **cannot read or modify** the payment.
+Instead of directly communicating with the banking server, payment requests are encrypted and converted into secure packets that travel through a simulated Bluetooth Mesh Network. Once a bridge device with internet connectivity receives the packet, it forwards it to the backend for verification, decryption, and transaction settlement.
 
-👉 Achieved using:
-- RSA (key encryption)
-- AES-GCM (data encryption + tamper detection)
+This project simulates the future possibility of offline digital payments while emphasizing security, reliability, and distributed communication.
 
 ---
 
-### 🔁 2. Exactly-once processing (Idempotency)
+# ✨ Features
 
-Even if the same packet reaches backend multiple times:
-
-👉 It is processed **only once**
-
----
-
-### 🛡️ 3. Replay & tamper protection
-
-- Old packets → rejected  
-- Modified packets → rejected  
-
----
-
-# 🚀 How to Run
-
-## Prerequisites
-
-- Java 17+
+- 🔐 Hybrid Encryption (RSA + AES)
+- 📡 Bluetooth Mesh Network Simulation
+- 📦 Secure Packet-Based Payment Transfer
+- 🔁 Gossip Protocol for Packet Propagation
+- 🌐 Bridge Node for Internet Connectivity
+- 💰 Account Balance Management
+- 📊 Interactive Dashboard
+- 📈 Live Transaction Ledger
+- 📋 Activity Log
+- 📶 Network Statistics
+- 🔄 Mesh Reset & Gossip Simulation
+- 🛡️ Idempotent Transaction Processing
+- ⚡ RESTful APIs
+- 📱 Responsive User Interface
 
 ---
 
-## Run application
+# 🏗️ System Architecture
 
-### Windows
-
-mvnw.cmd spring-boot:run
-
-
-### Mac/Linux
-
-./mvnw spring-boot:run
-
-
----
-
-## Open dashboard
-
-
-http://localhost:8080/
-
-
----
-
-## Stop server
-
-
-Ctrl + C
-
+```
+               +----------------------+
+               |   React Dashboard    |
+               +----------+-----------+
+                          |
+                     REST APIs
+                          |
+               +----------v-----------+
+               |   Spring Boot API    |
+               +----------+-----------+
+                          |
+             -----------------------------
+             |                           |
+      Payment Processing          Mesh Simulation
+             |                           |
+      Transaction Service        Gossip Protocol
+             |                           |
+         MySQL Database         Virtual Devices
+```
 
 ---
 
-# 🧪 Demo Flow (Step-by-Step)
+# ⚙️ Technology Stack
 
-## Step 1 — Send Payment
+## Backend
 
-Fill:
-- sender  
-- receiver  
-- amount  
-- PIN  
+- Java 21
+- Spring Boot
+- Spring Web
+- Spring Data JPA
+- Hibernate
+- Maven
 
-Click:
+## Frontend
 
-📤 Inject into Mesh
+- React
+- Vite
+- Axios
+- React Icons
+- CSS3
 
+## Database
 
-### Backend:
-- Creates PaymentInstruction  
-- Encrypts using RSA + AES  
-- Wraps into MeshPacket  
-- Injects into device  
+- MySQL
 
----
+## Security
 
-## Step 2 — Gossip (Packet Spread)
-
-Click:
-
-🔄 Run Gossip Round (2–3 times)
-
-
-Packet spreads:
-
-
-Alice → Stranger → Stranger → Bridge
-
-
----
-
-## Step 3 — Bridge Upload
-
-Click:
-
-📡 Bridges Upload to Backend
-
-
-Backend pipeline:
-
-Hash packet
-Check idempotency
-Decrypt
-Validate timestamp
-Settle transaction
-
-
----
-
-## Step 4 — Duplicate Protection
-
-Click again:
-
-
-📡 Bridges Upload
-
-
-Result:
-
-
-DUPLICATE_DROPPED
-
-
----
-
-# 🏗️ Architecture
-
-
-Sender (offline)
-↓
-Encrypt (RSA + AES)
-↓
-Mesh Devices (gossip)
-↓
-Bridge Node (internet)
-↓
-Spring Boot Backend
-↓
-Settlement + Database
-
-
----
-
-# 🔥 Core Problems & Solutions
-
-## Problem 1: Untrusted Devices
-
-👉 Intermediate phones carry your data
-
-### Solution:
-Hybrid Encryption
-
-- AES → encrypt data  
-- RSA → encrypt AES key  
-- AES-GCM → ensures integrity  
-
----
-
-## Problem 2: Duplicate Transactions
-
-👉 Same packet arrives multiple times
-
-### Solution:
-Idempotency using hash
-
-seen.putIfAbsent(packetHash, now);
-
-
-✔ Only first request is processed  
-✔ Others are dropped  
-
----
-
-## Problem 3: Replay Attacks
-
-👉 Old packet reused
-
-### Solution:
-- timestamp validation  
-- unique nonce  
-
----
-
-# ⚙️ Tech Stack
-
-- Java 17  
-- Spring Boot 3  
-- Spring Data JPA  
-- H2 Database  
-- Thymeleaf  
-- REST APIs  
+- RSA-2048
+- AES-256-GCM
+- Hybrid Encryption
 
 ---
 
 # 📂 Project Structure
 
-
-src/main/java/com/instantupi/offline/
-├── controller/
-├── service/
-├── crypto/
-├── entity/
-├── repository/
-├── dto/
-└── config/
-
+```
+Instant-Offline-UPI
+│
+├── backend
+│   ├── src
+│   ├── pom.xml
+│   └── ...
+│
+├── frontend
+│   ├── public
+│   ├── src
+│   │
+│   ├── components
+│   ├── pages
+│   ├── services
+│   └── styles
+│
+├── README.md
+└── .gitignore
+```
 
 ---
 
-# 📊 API Reference
+# 🔄 Offline Payment Workflow
+
+```
+User
+
+   │
+
+   ▼
+
+Enter Payment Details
+
+   │
+
+   ▼
+
+Packet Creation
+
+   │
+
+   ▼
+
+AES Encryption
+
+   │
+
+   ▼
+
+RSA Encrypt AES Key
+
+   │
+
+   ▼
+
+Inject Packet into Mesh
+
+   │
+
+   ▼
+
+Bluetooth Mesh Gossip
+
+   │
+
+   ▼
+
+Bridge Device
+
+   │
+
+   ▼
+
+Backend Processing
+
+   │
+
+   ▼
+
+Decrypt Packet
+
+   │
+
+   ▼
+
+Verify Transaction
+
+   │
+
+   ▼
+
+Update Database
+
+   │
+
+   ▼
+
+Settlement Complete
+```
+
+---
+
+# 📊 Dashboard Features
+
+- Dashboard Summary Cards
+- Network Statistics
+- Mesh Device Monitoring
+- Payment Injection Form
+- Account Balance Table
+- Transaction Ledger
+- Activity Log
+
+---
+
+# 🗄️ Database Tables
+
+### Account
+
+| Field | Type |
+|-------|------|
+| VPA | String |
+| Holder Name | String |
+| Balance | Decimal |
+| Version | Long |
+
+---
+
+### Transaction
+
+| Field | Type |
+|-------|------|
+| ID | Long |
+| Sender VPA | String |
+| Receiver VPA | String |
+| Amount | Decimal |
+| Status | String |
+| Timestamp | DateTime |
+
+---
+
+# 🔐 Security Features
+
+- Hybrid Encryption
+- RSA Key Exchange
+- AES Payload Encryption
+- Idempotent Packet Processing
+- Optimistic Locking
+- Secure Transaction Settlement
+
+---
+
+# 🚀 REST API Endpoints
 
 | Method | Endpoint | Description |
-|------|--------|------------|
-| GET | `/` | Dashboard UI |
-| GET | `/api/accounts` | View accounts |
-| GET | `/api/transactions` | View transactions |
-| POST | `/api/demo/send` | Create payment |
-| POST | `/api/mesh/gossip` | Spread packets |
-| POST | `/api/mesh/flush` | Upload to backend |
-| POST | `/api/mesh/reset` | Reset system |
-| POST | `/api/bridge/ingest` | Process packet |
+|---------|----------|-------------|
+| GET | `/api/accounts` | Fetch all accounts |
+| GET | `/api/transactions` | Latest transactions |
+| GET | `/api/transactions/count` | Total transaction count |
+| POST | `/api/demo/send` | Inject payment packet |
+| GET | `/api/mesh/state` | Mesh network state |
+| POST | `/api/mesh/gossip` | Run gossip protocol |
+| POST | `/api/mesh/flush` | Upload packets via bridge |
+| POST | `/api/mesh/reset` | Reset mesh network |
 
 ---
 
-# ⚠️ What’s NOT Production-Ready
+# 💻 Installation
 
-| Demo | Production |
-|------|-----------|
-| H2 DB | PostgreSQL |
-| In-memory cache | Redis |
-| Generated RSA key | HSM / KMS |
-| Simulated mesh | Real Bluetooth |
-| No authentication | Secure auth (JWT / mTLS) |
+## Clone Repository
+
+```bash
+git clone https://github.com/mahirhk123/Instant-Offline-UPI.git
+```
 
 ---
 
-# ⚠️ Honest Limitations
+## Backend
 
-- Receiver cannot verify balance offline  
-- Double spending possible before settlement  
-- Bluetooth complexity not implemented  
-- This is a **simulation system**  
+```bash
+cd backend
 
----
+mvn clean install
 
-# 🧠 Key Learnings
+mvn spring-boot:run
+```
 
-- Distributed system design  
-- Secure communication  
-- Idempotent APIs  
-- Concurrency handling  
-- Payment system architecture  
+Backend runs on
 
----
-
-# 🚀 Future Improvements
-
-- JWT Authentication  
-- Redis integration  
-- Cloud deployment  
-- Real Bluetooth communication  
+```
+http://localhost:8080
+```
 
 ---
 
-# ⭐ Final Thoughts
+## Frontend
 
-This project demonstrates a **real-world backend system design** combining:
+```bash
+cd frontend
 
-- Security  
-- Distributed systems  
-- Payment processing  
+npm install
 
----
+npm run dev
+```
 
-# 🛠 Troubleshooting
+Frontend runs on
 
-### Java not found
-Install JDK 17
-
----
-
-### Port already in use
-Change in application.properties:
-
-server.port=8081
-
+```
+http://localhost:5173
+```
 
 ---
 
-### First run slow
-Dependencies downloading (~2–3 minutes)
+# 📸 Screenshots
+
+> Add screenshots here.
+
+Example:
+
+```
+screenshots/
+
+dashboard.png
+
+mesh-network.png
+
+transactions.png
+
+mobile-view.png
+```
+
+---
+
+# 🎯 Future Enhancements
+
+- Real Bluetooth Communication
+- NFC Integration
+- QR Code Based Offline Payments
+- Digital Signature Verification
+- JWT Authentication
+- Multi-Bridge Synchronization
+- Redis Packet Cache
+- Docker Deployment
+- Kubernetes Deployment
+- Cloud Hosting
+
+---
+
+# 👨‍💻 Developer
+
+**Mahir Hussain**
+
+B.Tech Computer Science & Engineering
+
+
+GitHub:
+https://github.com/mahirhk123
+
+---
+
+# 📄 License
+
+This project is developed for educational and academic purposes.
+
+---
+
+# ⭐ If you found this project useful, please consider giving it a star.
