@@ -17,7 +17,10 @@ public class CorsConfig {
             public void addCorsMappings(CorsRegistry registry) {
 
                 registry.addMapping("/api/**")
-                        .allowedOrigins("http://localhost:5173")
+                        .allowedOrigins(
+                                "http://localhost:5173",
+                                "https://instant-offline-upi.vercel.app"
+                        )
                         .allowedMethods("*")
                         .allowedHeaders("*");
 
