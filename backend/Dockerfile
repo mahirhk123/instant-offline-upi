@@ -3,21 +3,20 @@ FROM eclipse-temurin:21-jdk AS build
 
 WORKDIR /app
 
-# Copy Maven wrapper
-COPY mvnw .
+# Copy Maven wrapper and project files
 COPY .mvn .mvn
+COPY mvnw .
 COPY pom.xml .
 
-# Give execute permission
 RUN chmod +x mvnw
 
 # Download dependencies
 RUN ./mvnw dependency:go-offline
 
-# Copy source code
+# Copy source
 COPY src src
 
-# Build the application
+# Build application
 RUN ./mvnw clean package -DskipTests
 
 # ---------- Runtime Stage ----------
@@ -27,6 +26,9 @@ WORKDIR /app
 
 COPY --from=build /app/target/*.jar app.jar
 
+# Render provides PORT dynamically
+ENV PORT=8080
+
 EXPOSE 8080
 
-ENTRYPOINT ["java","-jar","app.jar"]
+ENTRYPOINT ["sh","-c","java -Dserver.port=${PORT} -jar app.jar"]
