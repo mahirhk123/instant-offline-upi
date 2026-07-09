@@ -91,14 +91,28 @@ public class SettlementService {
         tx.setFailureReason(null);
 
         // 🔹 Save transaction in DB
-        transactions.save(tx);
+        Transaction savedTx = transactions.save(tx);
 
-        // 🔹 Log success
+// Force Hibernate to execute the INSERT immediately
+        transactions.flush();
+
+        log.info("==================================================");
+        log.info("TRANSACTION SAVED SUCCESSFULLY");
+        log.info("ID          : {}", savedTx.getId());
+        log.info("Packet Hash : {}", savedTx.getPacketHash());
+        log.info("Status      : {}", savedTx.getStatus());
+        log.info("==================================================");
+
+// 🔹 Log success
         log.info("SETTLED ₹{} from {} to {} (packetHash={}, bridge={}, hops={})",
-                amount, sender.getVpa(), receiver.getVpa(),
-                packetHash.substring(0, 12) + "...", bridgeNodeId, hopCount);
+                amount,
+                sender.getVpa(),
+                receiver.getVpa(),
+                packetHash.substring(0, 12) + "...",
+                bridgeNodeId,
+                hopCount);
 
-        return tx;
+        return savedTx;
     }
 
     /**

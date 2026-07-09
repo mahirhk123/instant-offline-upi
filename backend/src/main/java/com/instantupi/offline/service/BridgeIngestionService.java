@@ -118,6 +118,13 @@ public class BridgeIngestionService {
                     hopCount
             );
 
+            log.info("==================================================");
+            log.info("SETTLEMENT COMPLETED");
+            log.info("Transaction ID : {}", tx.getId());
+            log.info("Status         : {}", tx.getStatus());
+            log.info("Packet Hash    : {}", packetHash);
+            log.info("==================================================");
+
             return IngestResult.settled(packetHash, tx);
 
         } catch (Exception e) {
